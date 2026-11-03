@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terre d'Aloës - L'Éveil devant Hàyòm</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sanctuary: {
+                            50: '#fbfbfb',
+                            100: '#f5f5f7',
+                            200: '#ececed',
+                            300: '#dadadb',
+                            400: '#b8b8ba',
+                            500: '#8e8e93',
+                            700: '#3a3a3c',
+                            800: '#242426',
+                            900: '#161617',
+                            950: '#0c0c0d'
+                        },
+                        sacredGold: '#d6c59b',
+                        softGold: '#b8a67c'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        garamond: ['"EB Garamond"', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts for ethereal, sacred typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #0d0e12;
+            color: #1f1f23;
+            font-family: 'EB Garamond', Georgia, serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* BRUME MOUVANTE SACRÉE (CANVAS VOLUMÉTRIQUE VISIBLE ET ACTIF) */
+        #mistCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            display: block;
+        }
+
+        /* Voile de lisibilité central doux */
+        .ambient-veil {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(247, 247, 249, 0.88) 0%, rgba(244, 244, 248, 0.75) 60%, rgba(230, 230, 238, 0.55) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Fondu doux et sacré pour chaque apparition */
+        .holy-fade {
+            animation: holyAppear 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes holyAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(14px) scale(0.985);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        /* Curseur discret d'écriture sacrée */
+        .sacred-cursor::after {
+            content: '❘';
+            display: inline-block;
+            margin-left: 2px;
+            color: #b8a67c;
+            animation: sacredBlink 0.9s infinite;
+        }
+
+        @keyframes sacredBlink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.85; }
+        }
+
+        /* Champ de saisie invisible et élégant sans cadre */
+        .sacred-input {
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px dashed rgba(184, 166, 124, 0.45) !important;
+            outline: none !important;
+            box-shadow: none !important;
+            text-align: center;
+            font-family: 'EB Garamond', Georgia, serif;
+            font-size: 1.5rem;
+            color: #161617;
+            padding: 4px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .sacred-input:focus {
+            border-bottom: 1px solid #b8a67c !important;
+            background: rgba(255, 255, 255, 0.35) !important;
+        }
+
+        .sacred-input::placeholder {
+            color: rgba(142, 142, 147, 0.45);
+            font-style: italic;
+            font-size: 1.25rem;
+        }
+
+        /* Suppression des flèches sur les champs numériques */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        /* Styles d'impression pour la fiche finale */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            #mistCanvas,
+            .ambient-veil,
+            .no-print {
+                display: none !important;
+            }
+            .print-clean {
+                box-shadow: none !important;
+                border: 1px solid #222 !important;
+                padding: 24px !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-center items-center p-4 sm:p-8 antialiased selection:bg-sacredGold selection:text-sanctuary-950">
+
+    <!-- CANVAS DE BRUME ATMOSPHÉRIQUE DYNAMIQUE -->
+    <canvas id="mistCanvas" class="no-print"></canvas>
+    <div class="ambient-veil no-print" aria-hidden="true"></div>
+
+    <!-- CONTENEUR DU RITUEL SACRÉ -->
+    <main class="relative z-10 w-full max-w-2xl mx-auto flex flex-col justify-center min-h-[82vh] text-center px-4">
+
+        <!-- SCÈNE SACRÉE DYNAMIQUE -->
+        <div id="sacredStage" class="w-full">
+            <!-- Injecté dynamiquement par le script -->
+        </div>
+
+    </main>
+
+    <script>
+        /* ==========================================================================
+           ÉTAT DU PERSONNAGE (L'IMC RESTE STRICTEMENT SECRET)
+           ========================================================================== */
+        const character = {
+            firstName: "",
+            lastName: "",
+            gender: "Masculin",
+            age: 20,
+            height: 175,
+            weight: 70,
+            bmi: 22.9, // Calculé et utilisé pour suggérer les stats sans affichage
+            bmiCategory: "Normale",
+            stats: {
+                force: 0,
+                esprit: 0,
+                agilite: 0,
+                perception: 0,
+                charisme: 0
+            },
+            hasGift: false,
+            caste: "Laòs",
+            lineage: "Gens de la terre et des ateliers",
+            giftName: "Sans Don Terrestre",
+            giftDesc: "Marche sans la morsure du don ni la charge d'un fragment de Caïphe. Vit du labeur de ses mains.",
+            affinity: "Humilité humaine",
+            isDislocated: false
+        };
+
+        /* ==========================================================================
+           LES 12 APÔTRES CANONIQUES & LEURS DONS DÉRIVÉS
+           ========================================================================== */
+        const APOSTLE_GIFTS = {
+            zohar: {
+                apostle: "Zohar - Le Gardien des Cycles",
+                foundation: "Temps",
+                caste: "Ignis",
+                lineage: "Lignée Chronique des Marches Hautes",
+                giftName: "Stase de la Seconde Suspendue",
+                giftDesc: "Permet de figer brièvement les projectiles ou de ralentir le réflexe d'un adversaire pendant un battement de cœur."
+            },
+            amon: {
+                apostle: "Amon - Le Marcheur des Lointains",
+                foundation: "Espace",
+                caste: "Albhos",
+                lineage: "Franchisseurs de l'Horizon",
+                giftName: "Saut des Lisières Invisibles",
+                giftDesc: "Permet de plier l'espace sur une dizaine de pas pour se repositionner instantanément derrière un obstacle ou franchir un gouffre."
+            },
+            simon: {
+                apostle: "Simon - Le Cœur Vivant",
+                foundation: "Vie",
+                caste: "Rizòs",
+                lineage: "Gardiens de la Sève et des Vivants",
+                giftName: "Baume du Souffle Partagé",
+                giftDesc: "Referme les plaies hémorragiques et stoppe le venin par simple imposition des deux mains sur le corps blessé."
+            },
+            ovid: {
+                apostle: "Ovid - Le Silencieux",
+                foundation: "Mort",
+                caste: "Allòs",
+                lineage: "Marcheurs du Voile Crépusculaire",
+                giftName: "Murmure des Dépouilles",
+                giftDesc: "Permet d'entendre les dernières pensées d'un être décédé ou d'interroger les os récents pour connaître la nature exacte du trépas."
+            },
+            ian: {
+                apostle: "Iàn - Le Sculpteur du Réel",
+                foundation: "Matière",
+                caste: "Rizòs",
+                lineage: "Maçons de la Pierre Sacrée",
+                giftName: "Pétrification Spontanée de la Glaise",
+                giftDesc: "Rend la terre, le bois ou le mortier dur comme le fer sous le toucher, ou ramollit la roche pour y tailler une prise solide."
+            },
+            jacob: {
+                apostle: "Jàcòb - Le Miroir Brisé",
+                foundation: "Dualité (Ombre & Lumière)",
+                caste: "Allòs",
+                lineage: "Ombres Jumelles d'Aloës",
+                giftName: "Inversion du Reflet Obscur",
+                giftDesc: "Permet de dissimuler sa silhouette dans l'ombre d'une autre personne ou d'aveugler un adversaire en déviant la clarté ambiante."
+            },
+            jediah: {
+                apostle: "Jediàh - Le Pilier",
+                foundation: "Ordre & Voix Divine",
+                caste: "Ignis",
+                lineage: "Bannières de la Basilique de Kètrònn",
+                giftName: "Ordonnance du Silence Absolu",
+                giftDesc: "Impose l'immobilité et la soumission psychologique immédiate à une foule agitée ou à un adversaire par un ordre clair et souverain."
+            },
+            shiloh: {
+                apostle: "Shilòh - Le Marqueur",
+                foundation: "Symbole",
+                caste: "Albhos",
+                lineage: "Graveurs de Sceaux d'Aloës",
+                giftName: "Glyphe de Protection Invisible",
+                giftDesc: "Trace dans l'air ou sur un seuil un signe rituel lumineux capable de repousser les intrus ou d'interdire un passage."
+            },
+            ioseph: {
+                apostle: "Iòseph - La Voix du Décret",
+                foundation: "Souffle / Verbe",
+                caste: "Ignis",
+                lineage: "Orateurs des Sceaux Royaux",
+                giftName: "Verbe de Rupture",
+                giftDesc: "Un mot prononcé à pleine voix peut briser un verrou, fendre une porte de chêne massif ou désarçonner un cavalier à l'assaut."
+            },
+            sinai: {
+                apostle: "Sinàï - L'Éclaireur de l'Esprit",
+                foundation: "Invocation / Matérialisation",
+                caste: "Albhos",
+                lineage: "Tisseurs d'Illusions Tangibles",
+                giftName: "Projection de la Pensée Formée",
+                giftDesc: "Crée un leurre visuel et sonore tangible capable de détourner l'attention d'une patrouille ou de simuler une arme d'effroi."
+            },
+            eben: {
+                apostle: "Eben - Le Tisseur",
+                foundation: "Destin",
+                caste: "Albhos",
+                lineage: "Observateurs des Lignes Célestes",
+                giftName: "Faveur du Présage Favorable",
+                giftDesc: "Pressent le danger imminent une fraction de seconde avant son impact, facilitant l'esquive d'une attaque sournoise ou d'un piège."
+            },
+            tovi: {
+                apostle: "Tòvi - Le Ravin Silencieux",
+                foundation: "Vide & Oubli",
+                caste: "Allòs",
+                lineage: "Oubliés du Sceau Perdu",
+                giftName: "Dissolution de l'Empreinte",
+                giftDesc: "Efface instantanément ses traces de pas, son odeur et le souvenir immédiat qu'un témoin vient d'avoir de son passage."
+            }
+        };
+
+        /* ==========================================================================
+           HIÉRARCHIE DES CASTES POUR LA FICHE FINALE
+           ========================================================================== */
+        const CASTE_HIERARCHY_INFO = {
+            Ignis: {
+                title: "Caste Ignis (Sommet Social)",
+                rank: "Rang 1 / 5 • Haute Noblesse",
+                desc: "Sommet social absolu d'Aloës. Prétendus descendants des Apôtres, ils concentrent la haute noblesse, les maîtres de guerre et dignitaires de Kètrònn."
+            },
+            Albhos: {
+                title: "Caste Albhos (Noblesse Urbaine)",
+                rank: "Rang 2 / 5 • Bourgeoisie & Cités",
+                desc: "Petite noblesse et bourgeois des douze grandes villes. Leurs dons sont précis et utiles pour le commerce, la justice ou les arts."
+            },
+            Rizòs: {
+                title: "Caste Rizòs (Le Peuple Artisanal)",
+                rank: "Rang 3 / 5 • Artisans & Ruraux",
+                desc: "Artisans, bâtisseurs et paysans des bourgs. Ils possèdent des pouvoirs humbles et concrets. Ils forment la base économique d'Aloës."
+            },
+            Laòs: {
+                title: "Caste Laòs (Plein Peuple sans Don)",
+                rank: "Rang 4 / 5 • Masse Profane",
+                desc: "Humains sans don magique à leur Éveil. Main-d'œuvre laborieuse des champs et des fabriques sous la tutelle religieuse."
+            },
+            Allòs: {
+                title: "Caste Allòs (Les Hors-Caste & Àver)",
+                rank: "Rang 5 / 5 • Parias & Condamnés",
+                desc: "Hors-caste comprenant en premier lieu les Àver, porteurs de dons impurs ou considérés comme des malédictions, ainsi que les bannis et criminels."
+            }
+        };
+
+        /* ==========================================================================
+           LEXIQUE SÉMANTIQUE (DON MANUEL)
+           ========================================================================== */
+        const APOSTLE_KEYWORDS = {
+            zohar: ["temps", "chronos", "arret", "arrêt", "vitesse", "passe", "passé", "futur", "sablier", "seconde", "figer", "accelerer", "accélérer", "cycle", "ralentir", "stase", "heure"],
+            amon: ["espace", "teleportation", "téléportation", "distance", "faille", "portail", "saut", "dimension", "pas", "lointain", "franchir", "traverser"],
+            simon: ["vie", "soin", "guerir", "guérir", "sang", "corps", "regeneration", "régénération", "souffle", "cicatrisation", "coeur", "cœur", "blessure", "chair", "apaiser", "baume"],
+            ovid: ["mort", "silence", "cadavre", "os", "fin", "trepas", "trépas", "fletrir", "flétrir", "squelette", "tombe", "defunt", "défunt", "deuil"],
+            ian: ["matiere", "matière", "pierre", "metal", "métal", "sculpter", "terre", "solidifier", "roche", "fer", "forger", "acier", "minerai", "glaise"],
+            jacob: ["dualite", "dualité", "reflet", "miroir", "ombre", "lumiere", "lumière", "contraste", "jumeau", "double", "tenebres", "ténèbres", "penombre"],
+            jediah: ["ordre", "loi", "commandement", "pilier", "equilibre", "justice", "harmonie", "verite", "vérité", "regle", "règle", "obeir", "autorite", "autorité", "decret"],
+            shiloh: ["glyphe", "symbole", "rune", "marque", "sceau", "sceaux", "encre", "tracer", "tatouage", "graver", "calligraphie", "signe"],
+            ioseph: ["voix", "verbe", "parole", "cri", "mot", "decret", "décret", "son", "resonance", "parler", "souffle", "ordre", "echo", "hurlement"],
+            sinai: ["esprit", "illusion", "pensee", "pensée", "songe", "materialisation", "mirage", "idee", "idée", "reve", "rêve", "mental"],
+            eben: ["destin", "fils", "fil", "chaine", "chaîne", "trame", "probabilite", "futur", "tisseur", "chance", "presage", "présage", "augure"],
+            tovi: ["vide", "neant", "néant", "effacer", "disparition", "gouffre", "oubli", "dissolution", "ravin", "amnesie", "amnésie", "oublier", "rien"]
+        };
+
+        /* ==========================================================================
+           LES 13 QUESTIONS SANS RETOUR
+           ========================================================================== */
+        const RITUAL_QUESTIONS = [
+            {
+                text: "Face au corps d'un ennemi vaincu qui agonise dans la boue, quel geste t'impose ta conscience ?",
+                answers: [
+                    { text: "Poser mes mains sur sa plaie pour adoucir son supplice, sans souci de sa faute.", apostle: "simon" },
+                    { text: "L'écouter murmurer son secret ou son repentir avant que son souffle ne s'éteigne.", apostle: "ovid" },
+                    { text: "Ordonner à la troupe de poursuivre sa marche sans perdre un seul instant.", apostle: "jediah" },
+                    { text: "Effacer discrètement ses insignes pour que sa dépouille repose sans être profanée.", apostle: "tovi" }
+                ]
+            },
+            {
+                text: "Une horloge mécanique antique s'arrête net lors d'une veillée. Que ressens-tu dans ce silence soudain ?",
+                answers: [
+                    { text: "La certitude que chaque instant qui s'enfuit est un fil tendu par le destin.", apostle: "eben" },
+                    { text: "La tentation d'arrêter le flux du temps pour savourer cette seconde éternelle.", apostle: "zohar" },
+                    { text: "L'envie de démonter chaque rouage pour percer le génie de son bâtisseur.", apostle: "ian" },
+                    { text: "Un vertige devant l'immensité du vide et l'illusion des heures qui passent.", apostle: "tovi" }
+                ]
+            },
+            {
+                text: "Enfermé dans une cellule de pierre sans issue apparente, où cherches-tu ton salut ?",
+                answers: [
+                    { text: "Dans la fragilité cachée de la matière : fissurer la roche ou faire céder les gonds.", apostle: "ian" },
+                    { text: "Dans la recherche d'une faille invisible, un recoin où l'espace pourrait céder.", apostle: "amon" },
+                    { text: "Dans un serment prononcé à voix haute avec assez de force pour faire plier le geôlier.", apostle: "ioseph" },
+                    { text: "Dans l'obscurité du cachot, où mon ombre peut se fondre et tromper les sentinelles.", apostle: "jacob" }
+                ]
+            },
+            {
+                text: "Deux frères s'entredéchirent pour l'héritage d'un domaine. Comment interviens-tu ?",
+                answers: [
+                    { text: "Je proclame la loi de Kètrònn : la hiérarchie doit régner sans compromis d'humeur.", apostle: "jediah" },
+                    { text: "Je trace entre eux un symbole de serment sacré qui les liera sous peine de malédiction.", apostle: "shiloh" },
+                    { text: "Je leur rappelle le temps compté qu'il leur reste à vivre ensemble sous le ciel.", apostle: "zohar" },
+                    { text: "Je les laisse à leur querelle futile : nul ne possède vraiment la terre d'Aloës.", apostle: "tovi" }
+                ]
+            },
+            {
+                text: "Quelle vision d'un monde parfait résonne le plus au fond de ton être ?",
+                answers: [
+                    { text: "Un monde où la maladie, la souffrance et la faim sont bannies de chaque foyer.", apostle: "simon" },
+                    { text: "Un empire où l'ordre, la discipline et les lois saintes sont respectés au mot près.", apostle: "jediah" },
+                    { text: "Un univers où les pensées les plus nobles peuvent prendre chair et embellir le réel.", apostle: "sinai" },
+                    { text: "Un chemin infini sans frontières, où nulle barrière n'entrave le voyageur.", apostle: "amon" }
+                ]
+            },
+            {
+                text: "Devant un livre maudit scellé par une rune inconnue, quelle pulsion l'emporte ?",
+                answers: [
+                    { text: "Recopier méticuleusement le sceau pour comprendre son langage secret.", apostle: "shiloh" },
+                    { text: "Sonder les lignes du futur pour deviner si son ouverture causera la ruine.", apostle: "eben" },
+                    { text: "Visualiser ce qu'il renferme par la seule force de l'intuition et de l'esprit.", apostle: "sinai" },
+                    { text: "Le jeter dans les braises : certaines connaissances doivent retourner au néant.", apostle: "tovi" }
+                ]
+            },
+            {
+                text: "Une tempête de neige bloque votre caravane en montagne. Que murmures-tu au vent ?",
+                answers: [
+                    { text: "Un décret impérieux pour ordonner au blizzard de s'écarter de notre chemin.", apostle: "ioseph" },
+                    { text: "Une prière pour réchauffer le sang engourdi de ceux qui marchent à mes côtés.", apostle: "simon" },
+                    { text: "Un appel aux esprits de ceux qui ont péri ici pour qu'ils nous guident dans le blanc.", apostle: "ovid" },
+                    { text: "Rien : j'accueille la tempête comme le miroir de notre propre insignifiance.", apostle: "jacob" }
+                ]
+            },
+            {
+                text: "Quelle douleur te semblerait la plus insupportable au cours de ton existence ?",
+                answers: [
+                    { text: "Entendre sans répit les cris de souffrance de chaque être vivant qui m'entoure.", apostle: "simon" },
+                    { text: "Voir mon propre corps se pétrifier et devenir inerte pierre par pierre.", apostle: "ian" },
+                    { text: "Être réduit à un silence forcé et ne plus pouvoir prononcer un mot sans effroi.", apostle: "ioseph" },
+                    { text: "Sentir ma propre mémoire s'effilocher jusqu'à oublier le visage des miens.", apostle: "tovi" }
+                ]
+            },
+            {
+                text: "Dans une galerie de statues anciennes, vers laquelle ton regard se porte-t-il ?",
+                answers: [
+                    { text: "Celle d'un colosse taillé dans un granit brut défiant l'usure des siècles.", apostle: "ian" },
+                    { text: "Celle d'une silhouette encapuchonnée dont le visage demeure voilé dans l'ombre.", apostle: "jacob" },
+                    { text: "Celle d'un veilleur tourné vers le ciel, dont les yeux semblent voir demain.", apostle: "eben" },
+                    { text: "Celle d'un marcheur aux sandales usées, prêt à enjamber l'abîme.", apostle: "amon" }
+                ]
+            },
+            {
+                text: "Un souverain te demande d'inventer une arme nouvelle pour la gloire de sa caste. Que conçois-tu ?",
+                answers: [
+                    { text: "Un glaive dont le fil suspend le souffle de celui qu'il effleure.", apostle: "zohar" },
+                    { text: "Un étendard frappé d'un glyphe qui foudroie la volonté des traîtres.", apostle: "shiloh" },
+                    { text: "Un cor d'ivoire dont la tonalité brise les remparts de pierre.", apostle: "ioseph" },
+                    { text: "Un mirage lumineux capable de faire croire à l'ennemi qu'il affronte dix mille hommes.", apostle: "sinai" }
+                ]
+            },
+            {
+                text: "Un spectre apparaît sur le seuil d'une chapelle abandonnée. Que fais-tu ?",
+                answers: [
+                    { text: "Je m'approche sans crainte pour lui demander quel fardeau le retient parmi nous.", apostle: "ovid" },
+                    { text: "Je matérialise une barrière spirituelle pour l'empêcher d'approcher des vivants.", apostle: "sinai" },
+                    { text: "J'étudie la lumière étrange qu'il projette pour comprendre s'il est âme ou illusion.", apostle: "jacob" },
+                    { text: "Je fends la distance pour me placer entre lui et ceux qu'il pourrait effrayer.", apostle: "amon" }
+                ]
+            },
+            {
+                text: "Face à un choix déchirant où chaque issue brise un cœur, sur quoi reposes-tu ta décision ?",
+                answers: [
+                    { text: "Sur la ligne du destin : ce qui doit être accompli ne peut être évité.", apostle: "eben" },
+                    { text: "Sur la loi sacrée édictée par ceux qui détiennent l'autorité légitime.", apostle: "jediah" },
+                    { text: "Sur la préservation absolue du plus grand nombre de vies possibles.", apostle: "simon" },
+                    { text: "Sur l'équilibre entre la lumière et les ténèbres que ce choix va engendrer.", apostle: "jacob" }
+                ]
+            },
+            {
+                text: "Dernière parole devant Hàyòm : quel est le secret que ton âme redoute le plus ?",
+                answers: [
+                    { text: "Apprendre l'instant exact et l'heure inéluctable de mon propre trépas.", apostle: "eben" },
+                    { text: "Découvrir que le monde d'Aloës n'est qu'un songe sans substance ni fin.", apostle: "sinai" },
+                    { text: "Réaliser que le repos éternel n'est qu'une obscurité muette sans rédemption.", apostle: "ovid" },
+                    { text: "Percevoir simultanément chaque passé et chaque avenir sans jamais vivre le présent.", apostle: "zohar" }
+                ]
+            }
+        ];
+
+        let apostleAffinityScores = {};
+        let ritualStepIndex = 0;
+
+        /* ==========================================================================
+           DILEMMES DE LA PERTE POUR CAÏPHE (EN CAS D'ÉGALITÉ À 3 OU PLUS)
+           ========================================================================== */
+        const SACRIFICE_DILEMMAS = {
+            zohar: {
+                lossText: "Sacrifier tout souvenir de ton passé pour que le temps présent ne s'effondre pas.",
+                echoText: "Tu acceptes de n'avoir jamais existé hier aux yeux de ceux que tu as aimés."
+            },
+            amon: {
+                lossText: "Condamner un être cher à l'errance éternelle entre deux mondes pour sauver ta patrie.",
+                echoText: "Tu brises l'horizon et laisses une âme innocente flotter dans le vide des lisières."
+            },
+            simon: {
+                lossText: "Transférer l'agonie indicible d'un mourant dans la chair d'un enfant pur pour préserver le souffle sacré.",
+                echoText: "Tu guéris un saint en infligeant le martyre à une vie sans défense."
+            },
+            ovid: {
+                lossText: "Refuser le repos éternel aux défunts et les forcer à veiller sans fin sur le rempart des vivants.",
+                echoText: "Tu profanes le silence de la tombe pour en faire une garnison d'esclaves décharnés."
+            },
+            ian: {
+                lossText: "Laisser pétrifier le cœur battant d'un innocent pour forger la pierre d'un sanctuaire inébranlable.",
+                echoText: "Tu achètes l'éternité d'un temple au prix d'un sang vivant figé dans le granit."
+            },
+            jacob: {
+                lossText: "Trahir la lumière de ta propre conscience en embrassant une abjection nécessaire pour préserver la paix.",
+                echoText: "Tu deviens le monstre que tous maudiront afin que le mensonge garde les hommes unis."
+            },
+            jediah: {
+                lossText: "Condamner au bûcher un innocent sachant que sa mort seule évitera l'embrasement de la cité.",
+                echoText: "Tu sacrifies la justice pure au profit du maintien implacable de l'ordre théologique."
+            },
+            shiloh: {
+                lossText: "Effacer à jamais le nom sacré de ton dieu de tous les écrits pour sauver un seul homme de l'anathème.",
+                echoText: "Tu blasphemes la foi de tout un peuple pour préserver un souffle profane."
+            },
+            ioseph: {
+                lossText: "Prononcer un décret qui arrachera la langue et la voix de ton propre sang pour faire taire l'hérésie.",
+                echoText: "Tu condamnes ceux qui t'ont bercé au silence absolu pour préserver la doctrine."
+            },
+            sinai: {
+                lossText: "Remplacer l'esprit lucide d'un fou désespéré par un songe parfait mais factice, détruisant son humanité.",
+                echoText: "Tu assassines sa vérité au nom d'un bonheur illusoire sans réveil."
+            },
+            eben: {
+                lossText: "Connaître le destin tragique d'un peuple entier et choisir délibérément de ne rien faire pour ne pas rompre la trame.",
+                echoText: "Tu assistes à la ruine en spectateur complice, sanctifiant le désastre au nom de la fatalité."
+            },
+            tovi: {
+                lossText: "Effacer de la mémoire du monde l'existence même d'un martyr héroïque pour que sa souffrance ne devienne pas un symbole de guerre.",
+                echoText: "Tu ravis la gloire de son sacrifice pour le précipiter dans le néant de l'oubli complet."
+            }
+        };
+
+        /* ==========================================================================
+           MOTEUR D'ÉCRITURE SACRÉE EN DIRECT (TYPEWRITER EFFECT)
+           ========================================================================== */
+        let currentTypewriterTimeouts = [];
+
+        function clearTypewriters() {
+            currentTypewriterTimeouts.forEach(t => clearTimeout(t));
+            currentTypewriterTimeouts = [];
+        }
+
+        function typeWriterEffect(targetElement, fullText, speed = 26, onComplete = null) {
+            targetElement.textContent = "";
+            targetElement.classList.add("sacred-cursor");
+            let charIndex = 0;
+
+            function nextChar() {
+                if (charIndex < fullText.length) {
+                    targetElement.textContent += fullText.charAt(charIndex);
+                    charIndex++;
+                    const delay = (fullText.charAt(charIndex - 1) === '.' || fullText.charAt(charIndex - 1) === '?' || fullText.charAt(charIndex - 1) === ',') ? speed * 3.5 : speed;
+                    const timeoutId = setTimeout(nextChar, delay);
+                    currentTypewriterTimeouts.push(timeoutId);
+                } else {
+                    targetElement.classList.remove("sacred-cursor");
+                    if (onComplete) onComplete();
+                }
+            }
+            nextChar();
+        }
+
+        function revealAfterTyping(selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.classList.remove("opacity-0", "pointer-events-none");
+                el.classList.add("holy-fade");
+            }
+        }
+
+        /* ==========================================================================
+           MOTEUR NARRATIF PAS À PAS (FONDU SACRÉ & SAISIES SANS CADRE)
+           ========================================================================== */
+        const stage = document.getElementById('sacredStage');
+
+        function renderScene(html) {
+            clearTypewriters();
+            stage.innerHTML = `<div class="holy-fade space-y-8">${html}</div>`;
+        }
+
+        // Introduction dialoguée au clic
+        const INTRO_DIALOGUES = [
+            "« Âme sans nom... approche dans cette clarté où le temps n'a point d'emprise. »",
+            "« Les Douze Apôtres se tiennent à mes côtés en silence. Leurs regards traversent ton essence. »",
+            "« Avant que tu ne sois jeté sur la terre âpre d'Aloës, révèle-nous chaque trait de ton existence. »"
+        ];
+        let introIdx = 0;
+
+        function showIntroStep() {
+            if (introIdx < INTRO_DIALOGUES.length) {
+                renderScene(`
+                    <div class="cursor-pointer py-10 select-none group" onclick="nextIntroDialogue()">
+                        <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                        <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-12 opacity-0 pointer-events-none transition">
+                            Touchez pour écouter Hàyòm <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                        </p>
+                    </div>
+                `);
+                typeWriterEffect(
+                    document.getElementById('voiceSpeech'),
+                    INTRO_DIALOGUES[introIdx],
+                    24,
+                    () => revealAfterTyping('#continueHint')
+                );
+            } else {
+                askFirstName();
+            }
+        }
+
+        function nextIntroDialogue() {
+            introIdx++;
+            showIntroStep();
+        }
+
+        /* 1. Prénom */
+        function askFirstName() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="inputGroup" class="opacity-0 pointer-events-none space-y-4 max-w-md mx-auto pt-2">
+                    <input type="text" id="answerField" class="sacred-input w-full text-center" placeholder="Ton prénom..." onkeydown="if(event.key === 'Enter') submitFirstName()">
+                    <div>
+                        <button onclick="submitFirstName()" class="text-xs font-cinzel text-softGold hover:text-sanctuary-900 uppercase tracking-widest transition">
+                            Confier son prénom <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Quel est le premier son par lequel les hommes t'appelleront ? »",
+                25,
+                () => {
+                    revealAfterTyping('#inputGroup');
+                    const field = document.getElementById('answerField');
+                    if (field) field.focus();
+                }
+            );
+        }
+
+        function submitFirstName() {
+            const val = document.getElementById('answerField').value.trim();
+            character.firstName = val || "Soren";
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="askLastName()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Poursuivre <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« ${character.firstName}... Que ce souffle commence à te donner chair. »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 2. Nom */
+        function askLastName() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="inputGroup" class="opacity-0 pointer-events-none space-y-4 max-w-md mx-auto pt-2">
+                    <input type="text" id="answerField" class="sacred-input w-full text-center" placeholder="Ton nom..." onkeydown="if(event.key === 'Enter') submitLastName()">
+                    <div>
+                        <button onclick="submitLastName()" class="text-xs font-cinzel text-softGold hover:text-sanctuary-900 uppercase tracking-widest transition">
+                            Inscrire son nom <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Et quel nom de famille ou de lignée résonnera après ton prénom ? »",
+                25,
+                () => {
+                    revealAfterTyping('#inputGroup');
+                    const field = document.getElementById('answerField');
+                    if (field) field.focus();
+                }
+            );
+        }
+
+        function submitLastName() {
+            const val = document.getElementById('answerField').value.trim();
+            character.lastName = val || "Kaelen";
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="askGender()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Poursuivre <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« Ainsi les registres d'Aloës te nommeront ${character.firstName} ${character.lastName}. »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 3. Genre */
+        function askGender() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="genderChoices" class="opacity-0 pointer-events-none flex flex-wrap justify-center gap-4 max-w-md mx-auto pt-4">
+                    <button onclick="submitGender('Masculin')" class="px-5 py-2.5 rounded-xl border border-sanctuary-300 hover:border-sanctuary-800 bg-white/70 hover:bg-white text-xs font-cinzel uppercase tracking-wider text-sanctuary-900 transition">
+                        Masculin
+                    </button>
+                    <button onclick="submitGender('Féminin')" class="px-5 py-2.5 rounded-xl border border-sanctuary-300 hover:border-sanctuary-800 bg-white/70 hover:bg-white text-xs font-cinzel uppercase tracking-wider text-sanctuary-900 transition">
+                        Féminin
+                    </button>
+                    <button onclick="submitGender('Autre / Indéfini')" class="px-5 py-2.5 rounded-xl border border-sanctuary-300 hover:border-sanctuary-800 bg-white/70 hover:bg-white text-xs font-cinzel uppercase tracking-wider text-sanctuary-900 transition">
+                        Indéfini / Au-delà
+                    </button>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Sous quelle nature corporelle marcheras-tu parmi les enfants d'Aloës ? »",
+                25,
+                () => revealAfterTyping('#genderChoices')
+            );
+        }
+
+        function submitGender(genderVal) {
+            character.gender = genderVal;
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="askAge()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Poursuivre <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« Ton essence s'incarne en ce souffle. »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 4. Âge */
+        function askAge() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="inputGroup" class="opacity-0 pointer-events-none space-y-4 max-w-xs mx-auto pt-2">
+                    <input type="number" id="answerField" min="1" max="150" class="sacred-input w-full text-center" placeholder="20" onkeydown="if(event.key === 'Enter') submitAge()">
+                    <div>
+                        <button onclick="submitAge()" class="text-xs font-cinzel text-softGold hover:text-sanctuary-900 uppercase tracking-widest transition">
+                            Fixer l'âge <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Combien d'hivers ton être aura-t-il traversés au jour où commence ton périple ? »",
+                25,
+                () => {
+                    revealAfterTyping('#inputGroup');
+                    const field = document.getElementById('answerField');
+                    if (field) field.focus();
+                }
+            );
+        }
+
+        function submitAge() {
+            const rawVal = document.getElementById('answerField').value.trim();
+            const val = parseInt(rawVal, 10);
+            character.age = (!isNaN(val) && val > 0) ? val : 20;
+
+            let ageComment = "la sève de la jeunesse coule encore en toi.";
+            if (character.age >= 70) ageComment = "le crépuscule d'une longue existence a façonné ta mémoire.";
+            else if (character.age >= 50) ageComment = "le poids des ans a déjà instruit ta sagesse.";
+            else if (character.age >= 35) ageComment = "la pleine maturité guide la sûreté de tes décisions.";
+            else if (character.age < 16) ageComment = "à peine sorti du rite de l'enfance, le monde te paraîtra immense.";
+
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="askHeight()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Poursuivre <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« ${character.age} ans... ${ageComment} »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 4. Taille */
+        function askHeight() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="inputGroup" class="opacity-0 pointer-events-none space-y-4 max-w-xs mx-auto pt-2">
+                    <input type="number" id="answerField" min="50" max="400" class="sacred-input w-full text-center" placeholder="175" onkeydown="if(event.key === 'Enter') submitHeight()">
+                    <div>
+                        <button onclick="submitHeight()" class="text-xs font-cinzel text-softGold hover:text-sanctuary-900 uppercase tracking-widest transition">
+                            Établir la stature <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Quelle sera ta stature entre terre et ciel, en centimètres ? »",
+                25,
+                () => {
+                    revealAfterTyping('#inputGroup');
+                    const field = document.getElementById('answerField');
+                    if (field) field.focus();
+                }
+            );
+        }
+
+        function submitHeight() {
+            const rawVal = document.getElementById('answerField').value.trim();
+            const val = parseInt(rawVal, 10);
+            character.height = (!isNaN(val) && val > 0) ? val : 175;
+
+            let heightComment = `Ton ombre s'élèvera à ${character.height} cm au-dessus du sol.`;
+            if (character.height >= 230) {
+                heightComment = `Une silhouette cyclopéenne de ${character.height} cm... Les mortels lèveront la tête avec effroi.`;
+            } else if (character.height >= 195) {
+                heightComment = `Une haute stature de ${character.height} cm qui dominera sans peine la foule des cités.`;
+            } else if (character.height <= 145) {
+                heightComment = `Un gabarit discret de ${character.height} cm, prompt à se faufiler là où les géants trébuchent.`;
+            }
+
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="askWeight()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Poursuivre <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« ${heightComment} »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 5. Poids (Calcul interne de l'IMC sans jamais le montrer au joueur) */
+        function askWeight() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                <div id="inputGroup" class="opacity-0 pointer-events-none space-y-4 max-w-xs mx-auto pt-2">
+                    <input type="number" id="answerField" min="20" max="400" class="sacred-input w-full text-center" placeholder="70" onkeydown="if(event.key === 'Enter') submitWeight()">
+                    <div>
+                        <button onclick="submitWeight()" class="text-xs font-cinzel text-softGold hover:text-sanctuary-900 uppercase tracking-widest transition">
+                            Peser la chair <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Et quelle sera la masse de cette chair d'argile, en kilogrammes ? »",
+                25,
+                () => {
+                    revealAfterTyping('#inputGroup');
+                    const field = document.getElementById('answerField');
+                    if (field) field.focus();
+                }
+            );
+        }
+
+        function submitWeight() {
+            const rawVal = document.getElementById('answerField').value.trim();
+            const val = parseInt(rawVal, 10);
+            character.weight = (!isNaN(val) && val > 0) ? val : 70;
+
+            // Calcul silencieux de l'IMC pour le calibrage
+            const hm = character.height / 100;
+            character.bmi = parseFloat((character.weight / (hm * hm)).toFixed(1));
+
+            if (character.bmi < 18.5) character.bmiCategory = "Maigreur";
+            else if (character.bmi <= 24.9) character.bmiCategory = "Normale";
+            else if (character.bmi <= 29.9) character.bmiCategory = "Surpoids";
+            else character.bmiCategory = "Corpulence";
+
+            // Préparation des stats automatiques selon Âge & morphologie
+            applySecretBmiAndAgeSuggestion();
+
+            let weightComment = `${character.weight} kg de chair et de sang.`;
+            if (character.weight >= 130) {
+                weightComment = `${character.weight} kg d'une masse imposante qui fera trembler les planchers.`;
+            } else if (character.weight <= 50) {
+                weightComment = `une silhouette légère de ${character.weight} kg, pareille à un souffle d'air.`;
+            }
+
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="showStatsIntroduction()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[4rem]"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Entendre l'appel des aptitudes <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« Ton enveloppe mortelle est achevée : ${weightComment} »`,
+                25,
+                () => revealAfterTyping('#continueHint')
+            );
+        }
+
+        /* 6. Aspiration de Vie & Statistiques (Base 0, 4 bonus & 2 malus) */
+        function applySecretBmiAndAgeSuggestion() {
+            character.stats = { force: 0, esprit: 0, agilite: 0, perception: 0, charisme: 0 };
+            const age = character.age;
+            const bmi = character.bmi;
+
+            if (age >= 55) {
+                character.stats.esprit = 3;
+                character.stats.perception = 1;
+                character.stats.agilite = -1;
+                character.stats.force = -1;
+            } else if (age >= 40) {
+                if (bmi >= 25) {
+                    character.stats.esprit = 2;
+                    character.stats.force = 2;
+                    character.stats.agilite = -2;
+                } else {
+                    character.stats.esprit = 2;
+                    character.stats.perception = 2;
+                    character.stats.agilite = -1;
+                    character.stats.force = -1;
+                }
+            } else if (age < 20) {
+                if (bmi < 20) {
+                    character.stats.agilite = 2;
+                    character.stats.perception = 2;
+                    character.stats.esprit = -1;
+                    character.stats.force = -1;
+                } else {
+                    character.stats.agilite = 2;
+                    character.stats.force = 2;
+                    character.stats.esprit = -2;
+                }
+            } else {
+                if (bmi >= 27) {
+                    character.stats.force = 3;
+                    character.stats.esprit = 1;
+                    character.stats.agilite = -2;
+                } else if (bmi < 19) {
+                    character.stats.agilite = 2;
+                    character.stats.perception = 2;
+                    character.stats.force = -2;
+                } else {
+                    character.stats.force = 1;
+                    character.stats.esprit = 1;
+                    character.stats.agilite = 1;
+                    character.stats.perception = 1;
+                    character.stats.charisme = -2;
+                }
+            }
+        }
+
+        function showStatsIntroduction() {
+            renderScene(`
+                <div class="cursor-pointer py-6 select-none group" onclick="showStatsEditor()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[5rem]"></p>
+                    <p id="voiceSub" class="text-base font-garamond italic text-sanctuary-600 mt-4 max-w-md mx-auto opacity-0 transition"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Ajuster les caractéristiques <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Quelle vie désires-tu mener sur terre ? Le souffle naturel de ton corps a déjà esquissé tes faiblesses et tes grandeurs. »",
+                24,
+                () => {
+                    const sub = document.getElementById('voiceSub');
+                    if (sub) {
+                        sub.classList.remove('opacity-0');
+                        typeWriterEffect(
+                            sub,
+                            "« Tu dois consacrer exactement 4 étincelles de bonus (+1 / +5%) et admettre 2 failles d'infirmité (-1 / -5%) pour tes jets de 1d100. »",
+                            20,
+                            () => revealAfterTyping('#continueHint')
+                        );
+                    }
+                }
+            );
+        }
+
+        function getStatsBudget() {
+            let pos = 0, neg = 0;
+            for (const val of Object.values(character.stats)) {
+                if (val > 0) pos += val;
+                if (val < 0) neg += Math.abs(val);
+            }
+            return {
+                bonusUsed: pos,
+                malusUsed: neg,
+                isValid: (pos === 4 && neg === 2)
+            };
+        }
+
+        function modifyStatInEditor(key, delta) {
+            const current = character.stats[key];
+            const next = current + delta;
+            if (next < -2 || next > 3) return;
+
+            const budget = getStatsBudget();
+
+            if (delta > 0) {
+                if (current < 0) character.stats[key] = next;
+                else if (budget.bonusUsed < 4) character.stats[key] = next;
+            } else if (delta < 0) {
+                if (current > 0) character.stats[key] = next;
+                else if (budget.malusUsed < 2) character.stats[key] = next;
+            }
+
+            renderStatsEditorContent();
+        }
+
+        function showStatsEditor() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[3rem]"></p>
+                <div id="statsEditorContainer" class="space-y-6 pt-2 opacity-0 pointer-events-none transition"></div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Harmonise tes attributs devant les Douze Témoins. »",
+                25,
+                () => {
+                    revealAfterTyping('#statsEditorContainer');
+                    renderStatsEditorContent();
+                }
+            );
+        }
+
+        function renderStatsEditorContent() {
+            const container = document.getElementById('statsEditorContainer');
+            if (!container) return;
+
+            const budget = getStatsBudget();
+            const statLabels = {
+                force: { name: "Force", sub: "Vigueur & charge" },
+                esprit: { name: "Esprit", sub: "Volonté & lucidité" },
+                agilite: { name: "Agilité", sub: "Vitesse & réflexes" },
+                perception: { name: "Perception", sub: "Sens & intuition" },
+                charisme: { name: "Charisme", sub: "Voix & présence" }
+            };
+
+            let statsHtml = `
+                <div class="flex items-center justify-center gap-6 text-xs font-cinzel text-sanctuary-700 pb-2">
+                    <span class="${budget.bonusUsed === 4 ? 'text-green-700 font-bold' : ''}">Bonus : ${budget.bonusUsed} / 4</span>
+                    <span class="text-sanctuary-300">•</span>
+                    <span class="${budget.malusUsed === 2 ? 'text-green-700 font-bold' : ''}">Malus : ${budget.malusUsed} / 2</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 max-w-xl mx-auto">
+            `;
+
+            for (const [key, info] of Object.entries(statLabels)) {
+                const val = character.stats[key];
+                const pct = val * 5;
+                const signVal = val > 0 ? `+${val}` : `${val}`;
+                const signPct = pct >= 0 ? `+${pct}%` : `${pct}%`;
+
+                statsHtml += `
+                    <div class="py-3 px-2 rounded-xl bg-white/70 border border-sanctuary-200 text-center">
+                        <span class="block text-xs font-cinzel font-semibold text-sanctuary-900">${info.name}</span>
+                        <span class="block text-[10px] text-sanctuary-400 italic mb-2">${info.sub}</span>
+                        <div class="flex items-center justify-center gap-2 mb-1">
+                            <button onclick="modifyStatInEditor('${key}', -1)" class="w-6 h-6 rounded border border-sanctuary-300 hover:bg-sanctuary-100 text-xs font-bold transition">-</button>
+                            <span class="text-base font-cinzel font-bold text-sanctuary-900 w-6">${signVal}</span>
+                            <button onclick="modifyStatInEditor('${key}', 1)" class="w-6 h-6 rounded border border-sanctuary-300 hover:bg-sanctuary-100 text-xs font-bold transition">+</button>
+                        </div>
+                        <span class="text-[11px] font-mono ${pct > 0 ? 'text-sanctuary-900 font-bold' : (pct < 0 ? 'text-red-600 font-bold' : 'text-sanctuary-400')}">${signPct}</span>
+                    </div>
+                `;
+            }
+
+            statsHtml += `</div>`;
+
+            if (budget.isValid) {
+                statsHtml += `
+                    <div class="pt-4">
+                        <button onclick="askGiftChoice()" class="text-xs font-cinzel text-sanctuary-900 hover:text-softGold uppercase tracking-widest transition">
+                            Confirmer et interroger le Don <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                const diffB = 4 - budget.bonusUsed;
+                const diffM = 2 - budget.malusUsed;
+                statsHtml += `
+                    <p class="text-xs text-sanctuary-500 italic pt-2">
+                        Il reste ${diffB} bonus et ${diffM} malus à placer.
+                    </p>
+                `;
+            }
+
+            container.innerHTML = statsHtml;
+        }
+
+        /* 7. Choix du Don ou Sans Don */
+        function askGiftChoice() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[5rem]"></p>
+                <div id="giftChoicesContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto pt-6 text-left opacity-0 pointer-events-none transition">
+                    <div onclick="chooseNoGift()" class="cursor-pointer p-6 rounded-2xl border border-sanctuary-300 bg-white/70 hover:bg-white hover:border-sanctuary-700 transition group">
+                        <span class="block text-xs font-cinzel font-bold text-sanctuary-900 uppercase mb-1">
+                            La Voie sans Don
+                        </span>
+                        <p class="text-xs text-sanctuary-600 italic">
+                            « Je vivrai du labeur de mes mains, libre du fardeau divin. »
+                        </p>
+                        <span class="block text-[10px] font-cinzel text-sanctuary-400 uppercase mt-3">Caste Laòs • Envoi direct sur Terre</span>
+                    </div>
+
+                    <div onclick="chooseWithGift()" class="cursor-pointer p-6 rounded-2xl border border-softGold bg-white hover:border-sanctuary-900 transition group">
+                        <span class="block text-xs font-cinzel font-bold text-sanctuary-900 uppercase mb-1">
+                            L'Éveil d'un Don
+                        </span>
+                        <p class="text-xs text-sanctuary-600 italic">
+                            « Je consens à porter une résonance sacrée sous mes côtes. »
+                        </p>
+                        <span class="block text-[10px] font-cinzel text-softGold uppercase mt-3">Choix libre ou Jugement des 13 questions</span>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Vient le moment décisif. Ton corps réclame-t-il le feu d'un don magique, ou préfères-tu marcher sans miracle parmi les simples hommes ? »",
+                24,
+                () => revealAfterTyping('#giftChoicesContainer')
+            );
+        }
+
+        function chooseNoGift() {
+            character.hasGift = false;
+            character.caste = "Laòs";
+            character.lineage = "Gens de la terre et des ateliers";
+            character.giftName = "Sans Don Terrestre (Humain Libre)";
+            character.giftDesc = "L'âme s'enracine dans la simplicité humaine. Échappe aux stigmates magiques et aux décrets des inquisiteurs. Ne porte aucun fragment de Caïphe.";
+            character.affinity = "Bénédiction du labeur profane";
+
+            renderScene(`
+                <div class="cursor-pointer py-8 select-none group" onclick="finishCreation()">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                    <p id="voiceSub" class="text-base font-garamond italic text-sanctuary-600 mt-4 max-w-md mx-auto opacity-0 transition"></p>
+                    <p id="continueHint" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-10 opacity-0 pointer-events-none transition">
+                        Descendre sur terre et recevoir sa fiche <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </p>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« Ton humilité est entendue, ${character.firstName}. Tu appartiendras à la caste des Laòs. »`,
+                25,
+                () => {
+                    const sub = document.getElementById('voiceSub');
+                    if (sub) {
+                        sub.classList.remove('opacity-0');
+                        typeWriterEffect(
+                            sub,
+                            "« Marche sans le fardeau des reliques. Va, accomplis tes jours sur la Terre d'Aloës. »",
+                            22,
+                            () => revealAfterTyping('#continueHint')
+                        );
+                    }
+                }
+            );
+        }
+
+        function chooseWithGift() {
+            character.hasGift = true;
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[3rem]"></p>
+                <div id="giftPathsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto pt-6 text-left opacity-0 pointer-events-none transition">
+                    <div onclick="startManualGiftCreation()" class="cursor-pointer p-6 rounded-2xl border border-sanctuary-300 bg-white/70 hover:bg-white hover:border-sanctuary-700 transition">
+                        <span class="block text-xs font-cinzel font-bold text-sanctuary-900 uppercase mb-1">
+                            1. Création Libre
+                        </span>
+                        <p class="text-xs text-sanctuary-600 italic">
+                            Choisis ta caste, nomme et décris ton don. Hàyòm révélera ton Apôtre tutélaire.
+                        </p>
+                    </div>
+
+                    <div onclick="startRitual13Questions()" class="cursor-pointer p-6 rounded-2xl border border-softGold bg-white hover:border-sanctuary-900 transition">
+                        <span class="block text-xs font-cinzel font-bold text-sanctuary-900 uppercase mb-1">
+                            2. Le Test de Personnalité
+                        </span>
+                        <p class="text-xs text-sanctuary-600 italic">
+                            13 situations morales sans retour en arrière. Les Apôtres trancheront ton destin.
+                        </p>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Comment ce pouvoir doit-il se manifester en toi ? »",
+                25,
+                () => revealAfterTyping('#giftPathsContainer')
+            );
+        }
+
+        /* 8. Création manuelle avec saisies intégrées sans cadre */
+        function startManualGiftCreation() {
+            renderScene(`
+                <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                <div id="manualGiftForm" class="space-y-6 max-w-md mx-auto pt-4 text-center opacity-0 pointer-events-none transition">
+                    <div>
+                        <span class="block text-xs font-cinzel text-sanctuary-500 uppercase tracking-wider mb-2">Caste d'Aloës</span>
+                        <select id="manualCaste" class="sacred-input w-full text-center text-sm font-cinzel cursor-pointer">
+                            <option value="Ignis">Ignis (Haute noblesse de Kètrònn)</option>
+                            <option value="Albhos">Albhos (Noblesse urbaine & bourgeois)</option>
+                            <option value="Rizòs">Rizòs (Artisans & ruraux du peuple)</option>
+                            <option value="Allòs">Allòs (Àver porteurs de dons impurs & parias)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <span class="block text-xs font-cinzel text-sanctuary-500 uppercase tracking-wider mb-1">Nom du Don</span>
+                        <input type="text" id="manualGiftTitle" class="sacred-input w-full text-center" placeholder="ex: Caresse du Froid Temporel" value="Caresse du Froid Temporel">
+                    </div>
+
+                    <div>
+                        <span class="block text-xs font-cinzel text-sanctuary-500 uppercase tracking-wider mb-1">Effet & Manifestation</span>
+                        <textarea id="manualGiftDescription" rows="3" class="sacred-input w-full text-center text-base" placeholder="Décris comment opère ce don...">Permet de ralentir la seconde et figer le souffle d'un adversaire par simple fixation visuelle.</textarea>
+                    </div>
+
+                    <div class="pt-4">
+                        <button onclick="submitManualGift()" class="text-xs font-cinzel text-sanctuary-900 hover:text-softGold uppercase tracking-widest transition">
+                            Sonder l'essence du don <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                "« Définis ta caste et ton don. Les Apôtres sonderont la résonance de tes mots. »",
+                25,
+                () => revealAfterTyping('#manualGiftForm')
+            );
+        }
+
+        function normalizeText(str) {
+            return str
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9\s]/g, " ");
+        }
+
+        function analyzeGiftKeywords(title, description) {
+            const rawText = `${title} ${description}`;
+            const normalized = normalizeText(rawText);
+            const tokens = normalized.split(/\s+/).filter(Boolean);
+
+            const scores = {};
+            for (const key of Object.keys(APOSTLE_GIFTS)) scores[key] = 0;
+
+            for (const [apostleKey, keywords] of Object.entries(APOSTLE_KEYWORDS)) {
+                for (const kw of keywords) {
+                    const normKw = normalizeText(kw);
+                    for (const token of tokens) {
+                        if (token === normKw) scores[apostleKey] += 3;
+                        else if (token.length >= 4 && (token.startsWith(normKw) || normKw.startsWith(token))) scores[apostleKey] += 1;
+                    }
+                }
+            }
+
+            let maxScore = 0;
+            let best = [];
+            for (const [key, sc] of Object.entries(scores)) {
+                if (sc > maxScore) { maxScore = sc; best = [key]; }
+                else if (sc === maxScore && sc > 0) { best.push(key); }
+            }
+
+            if (maxScore === 0) return { tied: false, apostles: ["ian"] };
+            if (best.length >= 2) return { tied: true, apostles: best };
+            return { tied: false, apostles: best };
+        }
+
+        function submitManualGift() {
+            character.caste = document.getElementById('manualCaste').value;
+            character.giftName = document.getElementById('manualGiftTitle').value.trim() || "Don Singulier";
+            character.giftDesc = document.getElementById('manualGiftDescription').value.trim() || "Pouvoir éveillé selon la coutume.";
+
+            const analysis = analyzeGiftKeywords(character.giftName, character.giftDesc);
+
+            if (analysis.tied && analysis.apostles.length >= 2) {
+                triggerCaipheDislocation(analysis.apostles[0], analysis.apostles[1]);
+            } else {
+                const apostleKey = analysis.apostles[0] || "ian";
+                const profile = APOSTLE_GIFTS[apostleKey] || APOSTLE_GIFTS.ian;
+                character.lineage = profile.lineage;
+                character.affinity = `Révélation divine : Résonance avec ${profile.apostle} (Fondement : ${profile.foundation})`;
+                finishCreation();
+            }
+        }
+
+        /* 9. Le Test des 13 Questions sans retour */
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function startRitual13Questions() {
+            apostleAffinityScores = {
+                zohar: 0, amon: 0, simon: 0, ovid: 0,
+                ian: 0, jacob: 0, jediah: 0, shiloh: 0,
+                ioseph: 0, sinai: 0, eben: 0, tovi: 0
+            };
+            ritualStepIndex = 0;
+            showRitualQuestion();
+        }
+
+        function showRitualQuestion() {
+            const q = RITUAL_QUESTIONS[ritualStepIndex];
+            const shuffledAnswers = shuffleArray(q.answers);
+
+            let answersHtml = shuffledAnswers.map((ans, idx) => `
+                <div onclick="answerRitualQuestion('${ans.apostle}')" class="cursor-pointer p-4 rounded-xl border border-sanctuary-300 hover:border-sanctuary-800 bg-white/70 hover:bg-white transition text-xs font-garamond text-sanctuary-900 leading-relaxed text-left group">
+                    <span class="inline-block w-5 text-softGold font-cinzel">${String.fromCharCode(65 + idx)}.</span>
+                    <span>${ans.text}</span>
+                </div>
+            `).join('');
+
+            renderScene(`
+                <span class="text-[11px] font-cinzel text-softGold uppercase tracking-widest block">Épreuve ${ritualStepIndex + 1} sur 13</span>
+                <p id="voiceSpeech" class="text-xl sm:text-2xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                <div id="answersContainer" class="space-y-2.5 max-w-xl mx-auto pt-4 opacity-0 pointer-events-none transition">
+                    ${answersHtml}
+                </div>
+            `);
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                `« ${q.text} »`,
+                22,
+                () => revealAfterTyping('#answersContainer')
+            );
+        }
+
+        function answerRitualQuestion(apostleKey) {
+            if (apostleAffinityScores[apostleKey] !== undefined) {
+                apostleAffinityScores[apostleKey] += 1;
+            }
+
+            ritualStepIndex++;
+            if (ritualStepIndex < RITUAL_QUESTIONS.length) {
+                showRitualQuestion();
+            } else {
+                evaluateRitualOutcome();
+            }
+        }
+
+        function evaluateRitualOutcome() {
+            let maxScore = -1;
+            let topApostles = [];
+
+            for (const [key, sc] of Object.entries(apostleAffinityScores)) {
+                if (sc > maxScore) { maxScore = sc; topApostles = [key]; }
+                else if (sc === maxScore && sc > 0) { topApostles.push(key); }
+            }
+
+            // Égalité à 3 ou plus : Intervention de Caïphe pour la question impossible de la perte
+            if (topApostles.length >= 3) {
+                triggerCaipheDilemmaOfLoss(topApostles);
+            } 
+            // Égalité stricte à 2 : Déroulement canonique de l'anomalie
+            else if (topApostles.length === 2) {
+                triggerCaipheDislocation(topApostles[0], topApostles[1]);
+            } 
+            // Un seul apôtre dominant
+            else {
+                const dominant = topApostles[0] || "simon";
+                const giftProfile = APOSTLE_GIFTS[dominant] || APOSTLE_GIFTS.simon;
+
+                character.isDislocated = false;
+                character.caste = giftProfile.caste;
+                character.lineage = giftProfile.lineage;
+                character.giftName = giftProfile.giftName;
+                character.giftDesc = giftProfile.giftDesc;
+                character.affinity = `Écho de ${giftProfile.apostle} (Fondement : ${giftProfile.foundation})`;
+                finishCreation();
+            }
+        }
+
+        /* 10-A. Ultime question de Caïphe sur la Perte (Égalité à 3) */
+        function triggerCaipheDilemmaOfLoss(tiedApostles) {
+            // Prépare les choix issus exactement des Apôtres à égalité
+            let optionsHtml = tiedApostles.map((apKey, idx) => {
+                const dilemma = SACRIFICE_DILEMMAS[apKey] || { lossText: "Consommer une partie de ton âme.", echoText: "" };
+                const apProfile = APOSTLE_GIFTS[apKey];
+                return `
+                    <div onclick="resolveTieLoss('${apKey}', ${JSON.stringify(tiedApostles).replace(/"/g, '&quot;')})" class="cursor-pointer p-4 rounded-xl border border-sanctuary-300 hover:border-sanctuary-800 bg-white/70 hover:bg-white transition text-xs font-garamond text-sanctuary-900 leading-relaxed text-left group">
+                        <span class="inline-block w-5 text-softGold font-cinzel">${String.fromCharCode(65 + idx)}.</span>
+                        <strong class="font-cinzel text-sanctuary-900 block mb-1">Accepter la perte liée au fondement de ${apProfile.foundation} :</strong>
+                        <p class="italic text-sanctuary-700">${dilemma.lossText}</p>
+                    </div>
+                `;
+            }).join('');
+
+            renderScene(`
+                <span class="text-[11px] font-cinzel text-sanctuary-500 uppercase tracking-widest block">L'Ordre se déchire • Trois ombres se dressent</span>
+                <p id="caipheLossSpeech" class="text-xl sm:text-2xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                <div id="lossContainer" class="space-y-3 max-w-xl mx-auto pt-3 opacity-0 pointer-events-none transition">
+                    <p id="caipheLossContext" class="text-xs font-garamond italic text-sanctuary-600 max-w-lg mx-auto pb-2"></p>
+                    ${optionsHtml}
+                </div>
+            `);
+
+            typeWriterEffect(
+                document.getElementById('caipheLossSpeech'),
+                "« Trois échos parfaits... Non, le ciel d'Aloës ne pliera jamais sous trois voix simultanées. »",
+                24,
+                () => {
+                    revealAfterTyping('#lossContainer');
+                    typeWriterEffect(
+                        document.getElementById('caipheLossContext'),
+                        "« Pour que ton âme ne se déchire pas dans le néant, tu dois consentir à la Perte. L'offrande morale que tu choisis d'endurer tranchera ce nœud pour ne laisser que deux liens indélébiles. »",
+                        18
+                    );
+                }
+            );
+        }
+
+        function resolveTieLoss(eliminatedApostle, tiedApostles) {
+            // L'apôtre dont la perte est assumée ou écartée permet d'obtenir strictement 2 apôtres restants
+            const remainingTwo = tiedApostles.filter(k => k !== eliminatedApostle).slice(0, 2);
+            triggerCaipheDislocation(remainingTwo[0], remainingTwo[1]);
+        }
+
+        /* 10-B. Interlude Caïphe (Égalité à 2 et avertissement sur terre) */
+        function triggerCaipheDislocation(ap1Key, ap2Key) {
+            const ap1 = APOSTLE_GIFTS[ap1Key];
+            const ap2 = APOSTLE_GIFTS[ap2Key];
+
+            character.isDislocated = true;
+            character.caste = "Allòs (Àver / Hors-Caste)";
+            character.lineage = `Lignée Double : ${ap1.foundation} & ${ap2.foundation}`;
+            character.affinity = `Dualité Proscrite • Écho de Caïphe l'Être Disloqué`;
+            character.giftName = `Don Hybride : Amalgame de ${ap1.foundation} et de ${ap2.foundation}`;
+            character.giftDesc = `Pouvoir né d'une dissonance rare entre ${ap1.apostle.split(' - ')[0]} et ${ap2.apostle.split(' - ')[0]}. En tant qu'Àver au don hybride, tu canalises la jonction de ces deux forces. En revanche, le dogme d'Aloës ne tolère aucune anomalie : l'Église de l'Apothéose traque sans merci ceux qui portent une double étincelle.`;
+
+            renderScene(`
+                <span class="text-[11px] font-cinzel text-sanctuary-500 uppercase tracking-widest block">Une voix brisée s'interpose</span>
+                <p id="caipheSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed max-w-xl mx-auto min-h-[4rem]"></p>
+                <div id="caipheDialogue" class="space-y-3 text-xs font-garamond italic text-sanctuary-700 max-w-lg mx-auto pt-2 leading-relaxed opacity-0 pointer-events-none transition">
+                    <p id="caipheP1"></p>
+                    <p id="caipheP2"></p>
+                    <p id="caipheP3" class="text-sanctuary-900 font-semibold not-italic pt-2"></p>
+                    <div id="caipheButton" class="pt-6 opacity-0 pointer-events-none transition">
+                        <button onclick="finishCreation(true)" class="text-xs font-cinzel text-sanctuary-900 hover:text-softGold uppercase tracking-widest transition">
+                            Accepter son destin et descendre sur Terre <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            typeWriterEffect(
+                document.getElementById('caipheSpeech'),
+                "« Regarde-les se figer... Deux Apôtres à parts égales. Tu n'es pas prévu dans leurs calculs célestes. »",
+                25,
+                () => {
+                    revealAfterTyping('#caipheDialogue');
+                    typeWriterEffect(
+                        document.getElementById('caipheP1'),
+                        "« Deux étincelles sacrées vibrent sous tes côtes. Pour l'Église de Kètrònn, tu seras une anomalie, un blasphème vivant qu'il faudra faire taire. »",
+                        18,
+                        () => {
+                            typeWriterEffect(
+                                document.getElementById('caipheP2'),
+                                "« Tu marcheras parmi les Allòs, avec les Àver pourchassés. Nul ne doit savoir ce que tu portes réellement. »",
+                                18,
+                                () => {
+                                    typeWriterEffect(
+                                        document.getElementById('caipheP3'),
+                                        "« Prends ce don mêlé, apprends à dissimuler sa double nature... et bon courage pour mener ta vie sur terre. »",
+                                        20,
+                                        () => revealAfterTyping('#caipheButton')
+                                    );
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        }
+
+        /* 11. Fiche finale imprimable */
+        function finishCreation(isCaiphe = false) {
+            let cleanCaste = "Laòs";
+            if (character.caste.includes("Ignis")) cleanCaste = "Ignis";
+            else if (character.caste.includes("Albhos")) cleanCaste = "Albhos";
+            else if (character.caste.includes("Rizòs")) cleanCaste = "Rizòs";
+            else if (character.caste.includes("Allòs")) cleanCaste = "Allòs";
+
+            const casteInfo = CASTE_HIERARCHY_INFO[cleanCaste] || CASTE_HIERARCHY_INFO.Laòs;
+
+            const finalHeading = isCaiphe 
+                ? "« Descends sur Aloës, être de discorde. »" 
+                : "« Va, et accomplis ta vie sur la Terre d'Aloës. »";
+
+            renderScene(`
+                <div class="text-center pb-4 no-print">
+                    <p id="voiceSpeech" class="text-2xl sm:text-3xl font-garamond italic text-sanctuary-900 leading-relaxed min-h-[3rem]"></p>
+                    <p id="finalSub" class="text-xs font-cinzel text-softGold uppercase tracking-widest mt-2 opacity-0 transition">
+                        Le sceau est apposé • Ton histoire commence
+                    </p>
+                </div>
+
+                <!-- FICHE DE NAISSANCE -->
+                <div id="sheetContainer" class="p-6 sm:p-8 rounded-2xl border border-sanctuary-300 bg-white/90 print-clean text-left space-y-6 max-w-xl mx-auto shadow-sm opacity-0 pointer-events-none transition">
+                    <div class="flex flex-wrap items-baseline justify-between border-b border-sanctuary-200 pb-3 gap-2">
+                        <div>
+                            <span class="text-[10px] font-cinzel tracking-widest uppercase text-sanctuary-400 block">Fiche d'Éveil Terrestre</span>
+                            <h3 class="text-2xl font-cinzel font-bold text-sanctuary-900">${character.firstName} ${character.lastName}</h3>
+                        </div>
+                        <div class="relative group/caste text-right">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-cinzel font-semibold bg-sanctuary-100 border border-sanctuary-300 text-sanctuary-800 cursor-help">
+                                Caste : ${character.caste} <i class="fa-solid fa-circle-info text-[10px] text-sanctuary-400"></i>
+                            </span>
+                            <div class="invisible group-hover/caste:visible opacity-0 group-hover/caste:opacity-100 transition-all duration-200 absolute right-0 top-full mt-2 w-72 p-3 bg-white text-sanctuary-900 rounded-xl border border-sanctuary-300 shadow-xl z-50 text-left pointer-events-none no-print">
+                                <span class="font-cinzel font-bold text-xs uppercase block text-sanctuary-900 mb-1">${casteInfo.title}</span>
+                                <span class="text-[10px] font-cinzel text-softGold uppercase block mb-1.5">${casteInfo.rank}</span>
+                                <p class="text-xs text-sanctuary-600 leading-relaxed italic">${casteInfo.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Données physiques SANS IMC -->
+                    <div class="grid grid-cols-4 gap-2 text-xs bg-sanctuary-50/70 p-3 rounded-xl border border-sanctuary-200 text-center">
+                        <div>
+                            <span class="font-cinzel text-sanctuary-400 block text-[10px] uppercase">Genre</span>
+                            <span class="font-semibold text-sanctuary-900">${character.gender}</span>
+                        </div>
+                        <div>
+                            <span class="font-cinzel text-sanctuary-400 block text-[10px] uppercase">Âge</span>
+                            <span class="font-semibold text-sanctuary-900">${character.age} ans</span>
+                        </div>
+                        <div>
+                            <span class="font-cinzel text-sanctuary-400 block text-[10px] uppercase">Stature</span>
+                            <span class="font-semibold text-sanctuary-900">${character.height} cm</span>
+                        </div>
+                        <div>
+                            <span class="font-cinzel text-sanctuary-400 block text-[10px] uppercase">Poids</span>
+                            <span class="font-semibold text-sanctuary-900">${character.weight} kg</span>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques D100 -->
+                    <div>
+                        <h4 class="text-xs font-cinzel font-bold text-sanctuary-700 uppercase tracking-wider mb-2">
+                            Statistiques & Modificateurs d'Épreuves (1d100)
+                        </h4>
+                        <div class="grid grid-cols-5 gap-2 text-center text-xs">
+                            ${['force', 'esprit', 'agilite', 'perception', 'charisme'].map(k => {
+                                const v = character.stats[k];
+                                const p = v * 5;
+                                const names = { force: 'Force', esprit: 'Esprit', agilite: 'Agilité', perception: 'Perception', charisme: 'Charisme' };
+                                return `
+                                    <div class="p-2 rounded-lg border border-sanctuary-200 bg-white">
+                                        <span class="font-cinzel block text-sanctuary-400 text-[10px] uppercase">${names[k]}</span>
+                                        <span class="text-sm font-cinzel font-bold text-sanctuary-900">${v >= 0 ? `+${v}` : v}</span>
+                                        <span class="block font-mono text-[10px] ${p > 0 ? 'text-sanctuary-900 font-bold' : (p < 0 ? 'text-red-600 font-bold' : 'text-sanctuary-400')}">${p >= 0 ? `+${p}%` : `${p}%`}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Don & Lignée -->
+                    <div class="border-t border-sanctuary-200 pt-4">
+                        <div class="p-4 rounded-xl bg-sanctuary-50/70 border border-sanctuary-200 text-xs space-y-1.5">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                                <strong class="font-cinzel text-sm text-sanctuary-900">${character.giftName}</strong>
+                                <span class="text-[10px] text-softGold italic font-cinzel">${character.lineage}</span>
+                            </div>
+                            <span class="text-[11px] text-sanctuary-500 font-cinzel block">${character.affinity}</span>
+                            <p class="text-sanctuary-700 italic leading-relaxed pt-1">
+                                ${character.giftDesc}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sheetActions" class="pt-6 flex flex-wrap items-center justify-between gap-4 max-w-xl mx-auto no-print opacity-0 pointer-events-none transition">
+                    <button onclick="restartAll()" class="text-xs font-cinzel text-sanctuary-500 hover:text-sanctuary-900 transition">
+                        ← Présenter une nouvelle âme
+                    </button>
+                    <button onclick="window.print()" class="px-5 py-2.5 rounded-xl bg-sanctuary-900 hover:bg-sanctuary-800 text-white font-cinzel text-xs tracking-wider uppercase transition flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i> Imprimer la fiche
+                    </button>
+                </div>
+            `);
+
+            typeWriterEffect(
+                document.getElementById('voiceSpeech'),
+                finalHeading,
+                25,
+                () => {
+                    const sub = document.getElementById('finalSub');
+                    if (sub) sub.classList.remove('opacity-0');
+                    revealAfterTyping('#sheetContainer');
+                    revealAfterTyping('#sheetActions');
+                }
+            );
+        }
+
+        function restartAll() {
+            introIdx = 0;
+            character.stats = { force: 0, esprit: 0, agilite: 0, perception: 0, charisme: 0 };
+            character.isDislocated = false;
+            showIntroStep();
+        }
+
+        window.onload = function() {
+            initMistCanvas();
+            showIntroStep();
+        };
+
+        /* ==========================================================================
+           MOTEUR DE BRUME ATMOSPHÉRIQUE FLUIDE (SIMULATION VISUELLE RÉELLE)
+           ========================================================================== */
+        function initMistCanvas() {
+            const canvas = document.getElementById('mistCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Création de 12 vortex de brume vaporeuse avec vitesses et rayons variables
+            const clouds = [];
+            const cloudCount = 10;
+            for (let i = 0; i < cloudCount; i++) {
+                clouds.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.max(width, height) * (0.35 + Math.random() * 0.3),
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    alpha: 0.28 + Math.random() * 0.32,
+                    phase: Math.random() * Math.PI * 2,
+                    phaseSpeed: 0.008 + Math.random() * 0.012
+                });
+            }
+
+            function animateMist() {
+                // Fond de base cendreux
+                ctx.fillStyle = '#e8e8ed';
+                ctx.fillRect(0, 0, width, height);
+
+                // Dessin et interpénétration des nappes de brume
+                for (let i = 0; i < clouds.length; i++) {
+                    const c = clouds[i];
+                    c.x += c.vx;
+                    c.y += c.vy;
+                    c.phase += c.phaseSpeed;
+
+                    // Rebond doux aux marges
+                    if (c.x < -c.radius * 0.5) c.vx = Math.abs(c.vx);
+                    if (c.x > width + c.radius * 0.5) c.vx = -Math.abs(c.vx);
+                    if (c.y < -c.radius * 0.5) c.vy = Math.abs(c.vy);
+                    if (c.y > height + c.radius * 0.5) c.vy = -Math.abs(c.vy);
+
+                    const dynamicRadius = c.radius * (1 + 0.12 * Math.sin(c.phase));
+                    const dynamicAlpha = c.alpha * (0.75 + 0.25 * Math.cos(c.phase));
+
+                    const grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, dynamicRadius);
+                    // Brume sombre vaporeuse contrastée identique à l'enregistrement vidéo
+                    grad.addColorStop(0, `rgba(45, 48, 58, ${dynamicAlpha})`);
+                    grad.addColorStop(0.45, `rgba(110, 114, 128, ${dynamicAlpha * 0.55})`);
+                    grad.addColorStop(0.75, `rgba(185, 188, 198, ${dynamicAlpha * 0.2})`);
+                    grad.addColorStop(1, 'rgba(235, 235, 240, 0)');
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, dynamicRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(animateMist);
+            }
+
+            animateMist();
+        }
+    </script>
+</body>
+</html>
